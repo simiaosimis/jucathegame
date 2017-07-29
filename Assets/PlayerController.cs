@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour {
 
@@ -34,12 +35,19 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		CheckWinningState();
 		UpdateDirection();
 		Shoot();
 		CheckJump();
 		Move();
 		ResolveCollision();
 		ResolveLantern();
+	}
+
+	void CheckWinningState() {
+		if(this.score == 3) {
+			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+		}
 	}
 
 	void UpdateDirection () {
@@ -111,6 +119,9 @@ public class PlayerController : MonoBehaviour {
         }
 		if(collidedObject.gameObject.CompareTag("Floor") && is_really_floor) {
 			isGround = true;
+		}
+		else if(collidedObject.gameObject.CompareTag("DeathFloor")) {
+			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
     }
 }
