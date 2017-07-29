@@ -5,18 +5,31 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
 
 	public float speed = 8f;
-	public float cdShoot = 0.2f;
 	public bool direction;
-	public GameObject shoot;
-	private float shootTime;
-	private Rigidbody rigidBody;
 	private float timeJump = 0f;
+	
+	public GameObject shoot;
+	public float cdShoot = 0.2f;
+	private float shootTime;
+	
+	private Rigidbody rigidBody;
+	
 	bool isGround = false;
+
+	public int score = 0;
+
+	public float batteryLife = 10f;
+	public float initialBatteryLife = 10f;
+	public bool isLanternOn = false;
+	public float cdActiveLantern = 0.2f;
+	private float activeLanternTime = 0f;
+	private GameObject lantern;
 
 	// Use this for initialization
 	void Start () {
 		rigidBody = this.GetComponent<Rigidbody>();
-		 Physics.gravity = new Vector3(0, -20.0F, 0);
+		Physics.gravity = new Vector3(0, -30.0F, 0);
+		lantern = this.transform.Find("Lantern").gameObject;
 	}
 	
 	// Update is called once per frame
@@ -26,6 +39,7 @@ public class PlayerController : MonoBehaviour {
 		CheckJump();
 		Move();
 		ResolveCollision();
+		ResolveLantern();
 	}
 
 	void UpdateDirection () {
@@ -46,7 +60,7 @@ public class PlayerController : MonoBehaviour {
 		if(Input.GetKey("up") && isGround) {
 			isGround = false;
 			timeJump = 0f;
-			this.rigidBody.AddForce(new Vector3(0f, 2000f, 0f),  ForceMode.Force);
+			this.rigidBody.AddForce(new Vector3(0f, 2500f, 0f),  ForceMode.Force);
 		}
 	}
 
@@ -55,6 +69,26 @@ public class PlayerController : MonoBehaviour {
 		float z = this.rigidBody.velocity.z;
 		timeJump += Time.deltaTime;
 		this.rigidBody.velocity = new Vector3((isGround ? 1f : Mathf.Max(1f - timeJump, 0.5f)) * this.speed * Input.GetAxis("Horizontal"), y, z);
+	}
+
+	void Lantern(){
+		if(isLanternOn){
+			batteryLife -= Time.deltaTime;
+			lantern.SetActive(true);
+			lantern.GetComponent<Light>().intensity = 3f * (batteryLife/initialBatteryLife);
+		}
+		else{
+			lantern.SetActive(false);
+		}
+	}
+	
+	void ResolveLantern(){
+		activeLanternTime += Time.deltaTime;
+		if(Input.GetKey(KeyCode.F) && activeLanternTime > cdActiveLantern){
+ 			isLanternOn = !isLanternOn;
+ 			activeLanternTime = 0f;
+		}
+		Lantern();
 	}
 
 	void ResolveCollision() {
@@ -75,7 +109,6 @@ public class PlayerController : MonoBehaviour {
             float y = contact.point.y;
             is_really_floor &= y >= max_y;
         }
-        Debug.Log(is_really_floor);
 		if(collidedObject.gameObject.CompareTag("Floor") && is_really_floor) {
 			isGround = true;
 		}
