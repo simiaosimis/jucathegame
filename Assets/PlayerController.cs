@@ -99,7 +99,7 @@ public class PlayerController : MonoBehaviour {
 		float y = this.rigidBody.velocity.y;
 		float z = this.rigidBody.velocity.z;
 		timeJump += Time.deltaTime;
-		this.rigidBody.velocity = new Vector3((isGround ? 1f : Mathf.Max(1f - timeJump, 0.5f)) * this.speed * Input.GetAxis("Horizontal"), y, z);
+		this.rigidBody.velocity = new Vector3((isGround ? 1f : Mathf.Max(1f - timeJump, 0.5f)) * this.speed * Input.GetAxis("Horizontal"), Mathf.Max(y, -10f), z);
 		animator.SetBool("Walk", Mathf.Abs(this.rigidBody.velocity.x) > 1e-9f);
 	}
 

@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\CameraController.cs" />
+     <Compile Include="Assets\Fonts\Script\scriptTexttest.cs" />
      <Compile Include="Assets\LightController.cs" />
      <Compile Include="Assets\PlayerController.cs" />
      <Compile Include="Assets\PyroParticles\Demo\DemoScript.cs" />
@@ -61,8 +62,10 @@
      <Compile Include="Assets\RefreshTimer.cs" />
      <Compile Include="Assets\ShootController.cs" />
      <Compile Include="Assets\TargetController.cs" />
+     <None Include="Assets\Fonts\Documentation\JazzCreateBubble_VersionHistory_1.1.txt" />
      <None Include="Assets\PyroParticles\Prefab\Materials\AdditiveTintable.shader" />
      <None Include="Assets\PyroParticles\Readme.txt" />
+     <None Include="Assets\Fonts\Documentation\JazzCreateAltKeys_BubbleFont.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
