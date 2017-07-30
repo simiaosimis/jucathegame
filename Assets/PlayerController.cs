@@ -90,8 +90,8 @@ public class PlayerController : MonoBehaviour {
 		if(Input.GetKey("up") && isGround) {
 			isGround = false;
 			timeJump = 0f;
+			animator.Play("Jump");
 			this.rigidBody.AddForce(new Vector3(0f, 2500f, 0f),  ForceMode.Force);
-			animator.SetBool("Jump", true);
 		}
 	}
 
