@@ -19,7 +19,6 @@ public class ShootController : MonoBehaviour {
 		this.GetComponent<Rigidbody>().velocity = new Vector3((direction ? 1 : -1) * speed, 0f, 0f);
 		if((lifeTime += Time.deltaTime) > maxLifeTime)
 			Destroy(this.gameObject);
-
 	}
 
 	void OnCollisionEnter(Collision collision) {

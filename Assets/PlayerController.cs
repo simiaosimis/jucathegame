@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviour {
 	private float startTick = 0f;
 	private GameObject lantern;
 	private Animator animator;
+	private SpriteRenderer spriteRenderer;
 
 	public Text batteryHud;
 	public Text scoreHud;
@@ -37,6 +38,8 @@ public class PlayerController : MonoBehaviour {
 	void Start () {
 		animator = this.GetComponent<Animator>();
 		rigidBody = this.GetComponent<Rigidbody>();
+		spriteRenderer = this.GetComponent<SpriteRenderer>();
+		this.spriteRenderer.flipX = !this.spriteRenderer.flipX;
 		Physics.gravity = new Vector3(0, -30.0F, 0);
 		lantern = this.transform.Find("Lantern").gameObject;
 		timeLeftHud.text = "";
@@ -62,11 +65,14 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void UpdateDirection () {
+		bool last_direction = this.direction;
 		if(Mathf.Abs(Input.GetAxis("Horizontal")) > 1e-9f) {
 			this.direction = Input.GetAxis("Horizontal") > 0;
 		}
-		this.transform.rotation = Quaternion.Euler(0, 180f * (direction ? 0 : 1), 0);
-		Debug.Log("Lantern Z: " + this.lantern.transform.position);
+		if(this.direction != last_direction) {
+			this.spriteRenderer.flipX = !this.spriteRenderer.flipX;
+		}
+		//Debug.Log("Lantern Z: " + this.lantern.transform.position);
 		this.lantern.transform.position = new Vector3(this.transform.position.x,
 													  this.transform.position.y,
 													  -this.lantern.transform.position.z);
@@ -85,6 +91,7 @@ public class PlayerController : MonoBehaviour {
 			isGround = false;
 			timeJump = 0f;
 			this.rigidBody.AddForce(new Vector3(0f, 2500f, 0f),  ForceMode.Force);
+			animator.SetBool("Jump", true);
 		}
 	}
 
@@ -136,6 +143,7 @@ public class PlayerController : MonoBehaviour {
         }
 		if(collidedObject.gameObject.CompareTag("Floor") && is_really_floor) {
 			isGround = true;
+			animator.SetBool("Jump", false);
 		}
 		else if(collidedObject.gameObject.CompareTag("DeathFloor")) {
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
