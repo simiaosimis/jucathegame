@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour {
@@ -24,13 +25,22 @@ public class PlayerController : MonoBehaviour {
 	public bool isLanternOn = false;
 	public float cdActiveLantern = 0.2f;
 	private float activeLanternTime = 0f;
+	private float startTick = 0f;
 	private GameObject lantern;
+	private Animator animator;
+
+	public Text batteryHud;
+	public Text scoreHud;
+	public Text timeLeftHud;
 
 	// Use this for initialization
 	void Start () {
+		animator = this.GetComponent<Animator>();
 		rigidBody = this.GetComponent<Rigidbody>();
 		Physics.gravity = new Vector3(0, -30.0F, 0);
 		lantern = this.transform.Find("Lantern").gameObject;
+		timeLeftHud.text = "";
+		this.direction = true;
 	}
 	
 	// Update is called once per frame
@@ -42,11 +52,12 @@ public class PlayerController : MonoBehaviour {
 		Move();
 		ResolveCollision();
 		ResolveLantern();
+		UpdateHUD();
 	}
 
 	void CheckWinningState() {
 		if(this.score == 3) {
-			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+			SceneManager.LoadScene("win");
 		}
 	}
 
@@ -54,6 +65,11 @@ public class PlayerController : MonoBehaviour {
 		if(Mathf.Abs(Input.GetAxis("Horizontal")) > 1e-9f) {
 			this.direction = Input.GetAxis("Horizontal") > 0;
 		}
+		this.transform.rotation = Quaternion.Euler(0, 180f * (direction ? 0 : 1), 0);
+		Debug.Log("Lantern Z: " + this.lantern.transform.position);
+		this.lantern.transform.position = new Vector3(this.transform.position.x,
+													  this.transform.position.y,
+													  -this.lantern.transform.position.z);
 	}
 
 	void Shoot () {
@@ -77,6 +93,7 @@ public class PlayerController : MonoBehaviour {
 		float z = this.rigidBody.velocity.z;
 		timeJump += Time.deltaTime;
 		this.rigidBody.velocity = new Vector3((isGround ? 1f : Mathf.Max(1f - timeJump, 0.5f)) * this.speed * Input.GetAxis("Horizontal"), y, z);
+		animator.SetBool("Walk", Mathf.Abs(this.rigidBody.velocity.x) > 1e-9f);
 	}
 
 	void Lantern(){
@@ -123,5 +140,24 @@ public class PlayerController : MonoBehaviour {
 		else if(collidedObject.gameObject.CompareTag("DeathFloor")) {
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
+    }
+
+    void UpdateHUD() {
+    	string batteryPercentage = Mathf.Max(0, ((int) (100 * (this.batteryLife / this.initialBatteryLife)))).ToString();
+    	string batteryLifeMsg = "Battery Life: " + batteryPercentage + "%";
+    	this.batteryHud.text = batteryLifeMsg;
+    	this.scoreHud.text = "Targets Hit: " + this.score.ToString() + "/3";
+    	LightController lightController = GameObject.Find("LightManager").GetComponent<LightController>();
+    	float timeAfterDarkness = Mathf.Max(0f, lightController.currentTime - lightController.timeToDarkness);
+    	if(timeAfterDarkness >= 0f && batteryLife <= 0f) {
+    		if(startTick == 0f)
+    			startTick = Time.time;
+    		int timeLeftToDie = 10 - (int) (Time.time - startTick);
+    		if(timeLeftToDie == 0) {
+    			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    		} else {
+    			this.timeLeftHud.text = (timeLeftToDie).ToString();
+    		}
+    	}
     }
 }

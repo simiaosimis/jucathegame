@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "juca", "Assembly-CSharp.csproj", "{56B9D550-D3B1-9E6F-FD1C-46F24D7EC2A8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "juca", "Assembly-CSharp-Editor.csproj", "{83D5C8DD-AAAB-FC18-E8F9-B73951A19AC1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{56B9D550-D3B1-9E6F-FD1C-46F24D7EC2A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56B9D550-D3B1-9E6F-FD1C-46F24D7EC2A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56B9D550-D3B1-9E6F-FD1C-46F24D7EC2A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83D5C8DD-AAAB-FC18-E8F9-B73951A19AC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83D5C8DD-AAAB-FC18-E8F9-B73951A19AC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83D5C8DD-AAAB-FC18-E8F9-B73951A19AC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83D5C8DD-AAAB-FC18-E8F9-B73951A19AC1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
