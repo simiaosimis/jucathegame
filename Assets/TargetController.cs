@@ -12,6 +12,9 @@ public class TargetController : MonoBehaviour {
 	void Update() {
 		if(hit != lastHit) {
 			bagulho.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("snowman_1");
+			bagulho.transform.position = new Vector3(bagulho.transform.position.x,
+													 bagulho.transform.position.y - 1f,
+													 bagulho.transform.position.z);
 		}
 		lastHit = hit;
 	}
