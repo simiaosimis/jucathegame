@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/gameplay.unity
+- path: Assets/second_gameplay.unity
   isLoaded: 1
   isActive: 1

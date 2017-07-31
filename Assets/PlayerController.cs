@@ -60,7 +60,7 @@ public class PlayerController : MonoBehaviour {
 
 	void CheckWinningState() {
 		if(this.score == 3) {
-			SceneManager.LoadScene("win");
+			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 		}
 	}
 
@@ -80,14 +80,14 @@ public class PlayerController : MonoBehaviour {
 
 	void Shoot () {
 		this.shootTime += Time.deltaTime;
-		if(Input.GetKey("space") && this.shootTime > this.cdShoot) {
+		if(Input.GetAxis("Fire2") > 0f && this.shootTime > this.cdShoot) {
 			this.shootTime = 0f;
 			Instantiate(shoot, this.transform).GetComponent<ShootController>().direction = this.direction;
 		}
 	}
 
 	void CheckJump () {
-		if(Input.GetKey("up") && isGround) {
+		if(Input.GetAxis("Fire1") > 0f && isGround) {
 			isGround = false;
 			timeJump = 0f;
 			animator.Play("Jump");
@@ -116,7 +116,7 @@ public class PlayerController : MonoBehaviour {
 	
 	void ResolveLantern(){
 		activeLanternTime += Time.deltaTime;
-		if(Input.GetKey(KeyCode.F) && activeLanternTime > cdActiveLantern){
+		if(Input.GetAxis("Fire3") > 0f && activeLanternTime > cdActiveLantern){
  			isLanternOn = !isLanternOn;
  			activeLanternTime = 0f;
 		}
@@ -146,7 +146,7 @@ public class PlayerController : MonoBehaviour {
 			animator.SetBool("Jump", false);
 		}
 		else if(collidedObject.gameObject.CompareTag("DeathFloor")) {
-			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		}
     }
 

@@ -23,8 +23,10 @@ public class ShootController : MonoBehaviour {
 
 	void OnCollisionEnter(Collision collision) {
 		if(!collision.gameObject.CompareTag("Player")) {
+			Debug.Log(collision.gameObject.tag);
 			if(collision.gameObject.CompareTag("Target")) {
 				bool alreadyHit = collision.gameObject.GetComponent<TargetController>().hit;
+				Debug.Log(alreadyHit);
 				if(!alreadyHit) {
 					GameObject.FindGameObjectsWithTag("Player")[0].GetComponent<PlayerController>().score++;
 				}
